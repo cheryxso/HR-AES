@@ -13,8 +13,8 @@ namespace DAL.Migrations
                 {
                     DepartmentId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(100)", nullable: false),  // для Name тип nvarchar
+                    Description = table.Column<string>(type: "nvarchar(500)", nullable: true)  // для Description тип nvarchar
                 },
                 constraints: table =>
                 {
@@ -27,9 +27,9 @@ namespace DAL.Migrations
                 {
                     EmployeeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Position = table.Column<int>(type: "int", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(100)", nullable: true),  // тип nvarchar для FirstName
+                    LastName = table.Column<string>(type: "nvarchar(100)", nullable: true),   // тип nvarchar для LastName
+                    Position = table.Column<string>(type: "nvarchar(100)", nullable: false),  // тип nvarchar для Position (назва посади)
                     HireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DepartmentId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -51,7 +51,7 @@ namespace DAL.Migrations
                     RequestId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RequestType = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(500)", nullable: true),  // тип nvarchar для Description
                     RequestDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false)
