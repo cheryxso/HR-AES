@@ -9,7 +9,7 @@ namespace BLL.Services.Interfaces
 {
     public interface IEmployeeService
     {
-        IEnumerable<EmployeeDTO> GetEmployees(int departmentId, int page);
+        IEnumerable<EmployeeDTO> GetEmployees(int departmentId);
         EmployeeDTO GetEmployeeById(int id);
     }
 }

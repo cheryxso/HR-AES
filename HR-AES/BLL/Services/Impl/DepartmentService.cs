@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using BLL.DTO;
+using BLL.Services.Interfaces;
+using CCL.Security;
+using CCL.Security.Identity;
 using DAL.Repositories.UnitOfWork;
 
 namespace BLL.Services.Impl
@@ -8,16 +11,20 @@ namespace BLL.Services.Impl
     public class DepartmentService : IDepartmentService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private int pageSize = 10;
 
         public DepartmentService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
-        public IEnumerable<DepartmentDTO> GetDepartments(int page)
+        public IEnumerable<DepartmentDTO> GetDepartments()
         {
-            var departments = _unitOfWork.Departments.GetAll(page, pageSize);
+            var user = SecurityContext.GetUser();
+			var userType = user.GetType();
+			if (userType != typeof(Admin) && userType != typeof(HREmployee) && userType != typeof(HRSupervisor))
+                throw new MethodAccessException();
+
+			var departments = _unitOfWork.Departments.GetAll();
             var departmentDTOs = new List<DepartmentDTO>();
 
             foreach (var department in departments)
@@ -25,7 +32,7 @@ namespace BLL.Services.Impl
                 departmentDTOs.Add(new DepartmentDTO
                 {
                     DepartmentId = department.DepartmentId,
-                    DepartmentName = department.DepartmentName,
+                    DepartmentName = department.Name.ToString(),
                     Description = department.Description
                 });
             }
@@ -35,13 +42,18 @@ namespace BLL.Services.Impl
 
         public DepartmentDTO GetDepartmentById(int id)
         {
-            var department = _unitOfWork.Departments.GetById(id);
+			var user = SecurityContext.GetUser();
+			var userType = user.GetType();
+			if (userType != typeof(Admin) && userType != typeof(HREmployee) && userType != typeof(HRSupervisor))
+				throw new MethodAccessException();
+
+			var department = _unitOfWork.Departments.Get(id);
             if (department == null) return null;
 
             return new DepartmentDTO
             {
                 DepartmentId = department.DepartmentId,
-                DepartmentName = department.DepartmentName,
+                DepartmentName = department.Name.ToString(),
                 Description = department.Description
             };
         }

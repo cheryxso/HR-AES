@@ -9,7 +9,7 @@ namespace BLL.Services.Interfaces
 {
     public interface IDepartmentService
     {
-        IEnumerable<DepartmentDTO> GetDepartments(int page);
+        IEnumerable<DepartmentDTO> GetDepartments();
         DepartmentDTO GetDepartmentById(int id);
     }
 }
